@@ -1,0 +1,15 @@
+[submodule "athenaApp"]
+	path = athenaApp
+	url = git@github.com:Wistful-Bison/athenaApp.git
+[submodule "athenaTicket"]
+	path = athenaTicket
+	url = git@github.com:Wistful-Bison/athenaTicket.git
+[submodule "athenaKb"]
+	path = athenaKb
+	url = git@github.com:Wistful-Bison/athenaKb.git
+[submodule "athenaKbSearch"]
+	path = athenaKbSearch
+	url = git@github.com:Wistful-Bison/athenaKbSearch.git
+[submodule "athenaUser"]
+	path = athenaUser
+	url = git@github.com:Wistful-Bison/athenaUser.git

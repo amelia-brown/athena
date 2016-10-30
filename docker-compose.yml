@@ -1,0 +1,73 @@
+version: '2'
+
+services:
+  athenaApp:
+    image: node:4
+    build: './athenaApp'
+    volumes:
+      - '.:/src'
+    ports:
+      - '3000:3000'
+    environment:
+      USER: 'http://athenaUser:3001'
+      TICKET: 'http://athenaTicket:3002'
+      KB: 'http://athenaKb:3003'
+      KBSEARCH: 'http://athenaKbSearch:3004'
+    links:
+      athenaKb
+      athenaKbSearch
+      athenaTicket
+      athenaUser
+    restart: unless-stopped
+  athenaKb:
+    image: node:4
+    build: './athenaKb'
+    volumes:
+      - '.:/src'
+    ports:
+      - '3003:3003'
+    links:
+      postgres
+    restart: unless-stopped
+  athenaKbSearch:
+    image: node:4
+    build: './athenaKbSearch'
+    ports:
+      - '3004:4004'
+    links:
+      postgres
+      elasticsearch
+      athenaTicket
+      athenaKb
+    restart: unless-stopped
+  athenaTicket:
+    image: node:4
+    build: './athenaTicket'
+    ports:
+      - '3002:3002'
+    links:
+      postgres
+    restart: unless-stopped
+  athenaUser:
+    image: node:4
+    build: './athenaUser'
+    ports:
+      - '3001:3001'
+    links:
+      mongo
+    restart: unless-stopped
+  mongo:
+    image: mongo:3.2
+    ports:
+      - '27017:27017'
+  postgres:
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+  elasticsearch:
+    expose:
+      - '9200'
+    image: elasticsearch:1.7
+    ports:
+      - '9200:9200'
