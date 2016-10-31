@@ -1,68 +1,63 @@
 version: '2'
 
 services:
-  athenaApp:
-    image: node:4
+  athenaapp:
     build: './athenaApp'
     volumes:
       - '.:/src'
     ports:
       - '3000:3000'
     environment:
-      USER: 'http://athenaUser:3001'
-      TICKET: 'http://athenaTicket:3002'
-      KB: 'http://athenaKb:3003'
-      KBSEARCH: 'http://athenaKbSearch:3004'
+      USER: 'http://athenauser:3001'
+      TICKET: 'http://athenaticket:3002'
+      KB: 'http://athenakb:3003'
+      KBSEARCH: 'http://athenakbsearch:3004'
     links:
-      athenaKb
-      athenaKbSearch
-      athenaTicket
-      athenaUser
+      - athenakb
+      - athenakbsearch
+      - athenaticket
+      - athenauser
     restart: unless-stopped
-  athenaKb:
-    image: node:4
+  athenakb:
     build: './athenaKb'
     volumes:
       - '.:/src'
     ports:
       - '3003:3003'
     links:
-      postgres
+      - postgres
     environment:
       POSTGRES: 'postgres'
     restart: unless-stopped
-  athenaKbSearch:
-    image: node:4
+  athenakbsearch:
     build: './athenaKbSearch'
     ports:
       - '3004:4004'
     depends_on:
-      athenaTicket
-      athenaKb
+      - athenaticket
+      - athenakb
     links:
-      postgres
-      elasticsearch
+      - postgres
+      - elasticsearch
     environment:
       POSTGRES: 'postgres'
       ELASTICSEARCH: 'elasticsearch'
     restart: unless-stopped
-  athenaTicket:
-    image: node:4
+  athenaticket:
     build: './athenaTicket'
     ports:
       - '3002:3002'
     links:
-      postgres
+      - postgres
     environment:
       POSTGRES: 'postgres'
-    estart: unless-stopped
-  athenaUser:
-    image: node:4
+    restart: unless-stopped
+  athenauser:
     build: './athenaUser'
     ports:
       - '3001:3001'
     links:
-      mongo
+      - mongo
     environment:
       MONGO: 'mongo'
     restart: unless-stopped
@@ -77,7 +72,7 @@ services:
     restart: unless-stopped
   elasticsearch:
     expose:
-      - '9200'
+      - '9300'
     image: elasticsearch:1.7
     ports:
-      - '9200:9200'
+      - '9300:9300'
