@@ -28,17 +28,23 @@ services:
       - '3003:3003'
     links:
       postgres
+    environment:
+      POSTGRES: 'postgres'
     restart: unless-stopped
   athenaKbSearch:
     image: node:4
     build: './athenaKbSearch'
     ports:
       - '3004:4004'
+    depends_on:
+      athenaTicket
+      athenaKb
     links:
       postgres
       elasticsearch
-      athenaTicket
-      athenaKb
+    environment:
+      POSTGRES: 'postgres'
+      ELASTICSEARCH: 'elasticsearch'
     restart: unless-stopped
   athenaTicket:
     image: node:4
@@ -47,7 +53,9 @@ services:
       - '3002:3002'
     links:
       postgres
-    restart: unless-stopped
+    environment:
+      POSTGRES: 'postgres'
+    estart: unless-stopped
   athenaUser:
     image: node:4
     build: './athenaUser'
@@ -55,6 +63,8 @@ services:
       - '3001:3001'
     links:
       mongo
+    environment:
+      MONGO: 'mongo'
     restart: unless-stopped
   mongo:
     image: mongo:3.2
