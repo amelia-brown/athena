@@ -8,7 +8,7 @@ services:
     ports:
       - '3000:3000'
     environment:
-      USER: 'http://athenauser:3001'
+      ATHENA_USER: 'http://athenauser:3001'
       TICKET: 'http://athenaticket:3002'
       KB: 'http://athenakb:3003'
       KBSEARCH: 'http://athenakbsearch:3004'
@@ -26,9 +26,14 @@ services:
       - '3003:3003'
     links:
       - postgres
+    depends_on:
+      - 'postgres'
+    restart: unless-stopped
     environment:
       POSTGRES: 'postgres'
-    restart: unless-stopped
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'default'
+      POSTGRES_DB: 'athena'
   athenakbsearch:
     build: './athenaKbSearch'
     ports:
@@ -36,31 +41,42 @@ services:
     depends_on:
       - athenaticket
       - athenakb
+      - 'postgres'
     links:
       - postgres
       - elasticsearch
+    restart: unless-stopped
     environment:
       POSTGRES: 'postgres'
       ELASTICSEARCH: 'elasticsearch'
-    restart: unless-stopped
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'default'
+      POSTGRES_DB: 'athena'
   athenaticket:
     build: './athenaTicket'
     ports:
       - '3002:3002'
     links:
       - postgres
+    depends_on:
+      - 'postgres'
+    restart: unless-stopped
     environment:
       POSTGRES: 'postgres'
-    restart: unless-stopped
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'default'
+      POSTGRES_DB: 'athena'
   athenauser:
     build: './athenaUser'
     ports:
       - '3001:3001'
+    depends_on:
+      - 'mongo'
     links:
       - mongo
     environment:
       MONGO: 'mongo'
-    restart: unless-stopped
+    restart: always
   mongo:
     image: mongo:3.2
     ports:
@@ -70,6 +86,10 @@ services:
     ports:
       - '5432:5432'
     restart: unless-stopped
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'default'
+      POSTGRES_DB: 'athena'
   elasticsearch:
     expose:
       - '9300'
