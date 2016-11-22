@@ -33,6 +33,12 @@
 
 ### Installing Dependencies
 
+> To clone the submodules, make sure you use the recursive flag
+
+```sh
+git clone --recursive https://github.com/amelia-brown/athenaKbSearch.git
+```
+
 From within the root directory:
 
 ```sh
