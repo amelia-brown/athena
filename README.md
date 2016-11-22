@@ -1,6 +1,7 @@
 # Athena
 
-> Pithy project description
+> Knowledge base application with public-facing articles and user-controlled ticketing system
+> Like zendesk!
 
 ## Team
 
@@ -20,15 +21,13 @@
 
 ## Usage
 
-> Some usage instructions
+> Create an account and log in to create tickets and articles
 
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- Docker
+- Docker-compose
+- Docker machine
 
 ## Development
 
@@ -37,15 +36,9 @@
 From within the root directory:
 
 ```sh
-sudo npm install -g bower
-npm install
-bower install
+docker-compose build
+docker-compse up
 ```
-
-### Roadmap
-
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
-
 
 ## Contributing
 
