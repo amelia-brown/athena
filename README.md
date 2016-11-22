@@ -46,6 +46,8 @@ docker-compose build
 docker-compse up
 ```
 
+Once the build has finished, you can view the live app at `localhost:3000`
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
